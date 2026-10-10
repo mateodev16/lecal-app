@@ -3,31 +3,40 @@ node_modules/
 
 # Build output
 dist/
-*.local
+dist-ssr/
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Environment
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
-# Prisma
-server/prisma/dev.db
-server/prisma/dev.db-journal
+# Prisma / SQLite
+server/prisma/*.db
+server/prisma/*.db-journal
+server/prisma/*.db-wal
+server/prisma/*.db-shm
 server/src/generated/
 
-# Logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Vite
+.vite/
+.vite.*
+
+# Test / coverage
+coverage/
 
 # Editor / OS
-.idea/
-.vscode/
-*.swp
 .DS_Store
 Thumbs.db
-
-# Vite / coverage
-coverage/
+*.local
+.idea/
+.vscode/*
+!.vscode/extensions.json
