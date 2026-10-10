@@ -1,16 +1,35 @@
-import { cpSync, existsSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const serverDir = path.resolve(__dirname, "..");
-const from = path.join(serverDir, "src", "generated");
-const to = path.join(serverDir, "dist", "generated");
+const here = path.dirname(fileURLToPath(import.meta.url));
+const srcRoot = path.resolve(here, "..", "src", "generated");
+const distRoot = path.resolve(here, "..", "dist", "generated");
 
-if (existsSync(from)) {
-  cpSync(from, to, { recursive: true });
-  console.log("[build] Prisma client generado copiado a dist/generated");
-} else {
-  console.error("[build] No se encontró src/generated; ejecutá prisma generate");
+const assetExtensions = new Set([".node", ".wasm", ".so", ".dll", ".dylib"]);
+
+function copyAssets(src, dest) {
+  if (!existsSync(src)) return 0;
+  mkdirSync(dest, { recursive: true });
+  let copied = 0;
+  for (const entry of readdirSync(src)) {
+    const from = path.join(src, entry);
+    const to = path.join(dest, entry);
+    const stat = statSync(from);
+    if (stat.isDirectory()) {
+      copied += copyAssets(from, to);
+    } else if (assetExtensions.has(path.extname(entry))) {
+      cpSync(from, to);
+      copied += 1;
+    }
+  }
+  return copied;
+}
+
+if (!existsSync(srcRoot)) {
+  console.error("No se encontró src/generated. Corré `prisma generate` primero.");
   process.exit(1);
 }
+
+const count = copyAssets(srcRoot, distRoot);
+console.log(`Prisma: ${count} archivo(s) binario(s) copiado(s) a dist/generated.`);
