@@ -792,6 +792,16 @@
   font-size: 0.82rem;
   color: #8fa795;
 }
+.footer-credit {
+  color: #8fa795;
+}
+.footer-credit__name {
+  color: inherit;
+  text-decoration: none;
+}
+.footer-credit__name:hover {
+  color: #fff;
+}
 
 /* ===================== Back to top ===================== */
 .back-top {

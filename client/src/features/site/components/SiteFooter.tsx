@@ -46,6 +46,17 @@ export function SiteFooter({ settings }: { settings: Record<SettingKey, string> 
         <div className="footer-bottom">
           <span>© {year} LECAL SRL. Todos los derechos reservados.</span>
           <span>Sitio de demostración — contenido de ejemplo editable.</span>
+          <span className="footer-credit">
+            Desarrollado por{" "}
+            <a
+              className="footer-credit__name"
+              href="https://www.linkedin.com/in/mateo-goñi-10ab54294"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Mateo Goñi
+            </a>
+          </span>
         </div>
       </div>
     </footer>
